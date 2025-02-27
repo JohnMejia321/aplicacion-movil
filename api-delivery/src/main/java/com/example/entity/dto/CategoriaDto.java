@@ -12,6 +12,9 @@ public class CategoriaDto {
 
     private String vigenciaString;
 
+    public CategoriaDto(Integer id, String nombre, String s) {
+    }
+
     public Integer getId() {
         return id;
     }
