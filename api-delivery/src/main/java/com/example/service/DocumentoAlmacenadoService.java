@@ -3,6 +3,7 @@ package com.example.service;
 
 
 import com.example.entity.DocumentoAlmacenado;
+import com.example.exception.MyFileNotFoundException;
 import com.example.repository.DocumentoAlmacenadoRepository;
 import com.example.utils.GenericResponse;
 import org.springframework.core.io.Resource;
@@ -75,8 +76,15 @@ public class DocumentoAlmacenadoService {
     }
 
     public ResponseEntity<Resource> downloadByFileName(String fileName, HttpServletRequest request) {
-        DocumentoAlmacenado doc = repo.findByFileName(fileName).orElse(new DocumentoAlmacenado());
-        return download(doc.getFileName(), request);
+        Optional<DocumentoAlmacenado> docOpt = repo.findByFileName(fileName);
+        if (!docOpt.isPresent()) {
+            // Manejar caso donde el documento no existe
+            throw new MyFileNotFoundException("Archivo no encontrado: " + fileName);
+        }
+        DocumentoAlmacenado doc = docOpt.get();
+        // Asegúrate de que el nombre del archivo tenga la extensión
+        String completeFileName = doc.getFileName() + doc.getExtension();
+        return download(completeFileName, request);
     }
 
     public HashMap<String, Object> validate(DocumentoAlmacenado obj) {

@@ -65,6 +65,7 @@ public class FileStorageService {
     public Resource loadResource(String completeFileName) {
         Path fileStorageLocation = getFileStorageLocation(getFolderName(completeFileName));
         Path path = fileStorageLocation.resolve(completeFileName).normalize();
+        System.out.println("📂 Buscando archivo en: " + path.toString());
         try {
             Resource resource = new UrlResource(path.toUri());
             if (resource.exists()) {

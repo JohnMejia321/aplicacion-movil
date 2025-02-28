@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 public interface DocumentoAlmacenadoRepository extends CrudRepository<DocumentoAlmacenado, Long> {
+
     @Query("SELECT da FROM DocumentoAlmacenado da WHERE da.estado = 'A' AND da.eliminado = false")
     Iterable<DocumentoAlmacenado> list();
 
